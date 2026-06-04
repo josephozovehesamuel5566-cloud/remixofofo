@@ -1,0 +1,455 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-sans), system-ui, sans-serif;
+  --font-display: var(--font-display), serif;
+  --font-mono: var(--font-mono), monospace;
+  
+  --color-brand-primary: #050505; /* Deep luxury black */
+  --color-brand-accent: #d41c1c; /* High-affinity brand crimson red */
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 65s linear infinite;
+}
+
+/* Custom scrollbar adjustments for a clean, frosted glass digital experience */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #050505;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.glassmorphism {
+  background-color: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* PREMIUM PRINT LIGHT MODE OVERRIDES */
+.light-mode {
+  --color-primary: #1e293b; /* Slate 800 */
+  --color-secondary: #475569; /* Slate 600 */
+  --color-muted: #64748b; /* Slate 500 */
+  --bg-color: #f8fafc; /* Slate 50 */
+  --card-bg: #ffffff;
+  --border-light: rgba(15, 23, 42, 0.08);
+  
+  background-color: var(--bg-color) !important;
+  color: var(--color-primary) !important;
+}
+
+/* Enable fluid and persistent high-fidelity transitions across light & dark states */
+html,
+body,
+.light-mode,
+.dark-mode,
+#site-primary-header,
+#top-breaking-news-ticker,
+article[id^="article-card-"],
+#newsletter-panel,
+#newsroom-role-simulator,
+#interactive-comments-workspace,
+#ai-search-results-output,
+#category-tag-filter-dashboard,
+button,
+a,
+input,
+textarea,
+select,
+.comment-card-elem,
+.bg-white\/5,
+.bg-white\/10,
+.border-white\/10 {
+  transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+              border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+              color 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+              box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Custom scrollbar adjustments in light mode */
+.light-mode ::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+.light-mode ::-webkit-scrollbar-thumb {
+  background: rgba(15, 23, 42, 0.12);
+}
+.light-mode ::-webkit-scrollbar-thumb:hover {
+  background: rgba(15, 23, 42, 0.25);
+}
+
+/* Base Light-Mode Class Utility Transpositions */
+.light-mode .text-slate-100 { color: #0f172a !important; }
+.light-mode .text-slate-200 { color: #1e293b !important; }
+.light-mode .text-slate-300 { color: #334155 !important; }
+.light-mode .text-slate-350 { color: #475569 !important; }
+.light-mode .text-slate-400 { color: #57606a !important; }
+.light-mode .text-slate-450 { color: #64748b !important; }
+.light-mode .text-white { color: #0f172a !important; }
+
+/* Keep elements that should remain white white (like text in red active buttons and tags) */
+.light-mode .bg-\[\#d41c1c\] .text-white,
+.light-mode .bg-\[\#d41c1c\] *,
+.light-mode button[class*="bg-[#d41c1c]"],
+.light-mode button[class*="bg-[#d41c1c]"] *,
+.light-mode span[class*="bg-[#d41c1c]"],
+.light-mode span[class*="bg-[#d41c1c]"] *,
+.light-mode a[class*="bg-[#d41c1c]"],
+.light-mode a[class*="bg-[#d41c1c]"] * {
+  color: #ffffff !important;
+}
+
+/* Transparency-mapping utilities in light mode */
+.light-mode .bg-white\/5 {
+  background-color: rgba(15, 23, 42, 0.03) !important;
+}
+.light-mode .bg-white\/5:hover {
+  background-color: rgba(15, 23, 42, 0.06) !important;
+}
+.light-mode .hover\:bg-white\/10:hover {
+  background-color: rgba(15, 23, 42, 0.08) !important;
+}
+.light-mode .bg-white\/10 {
+  background-color: rgba(15, 23, 42, 0.06) !important;
+}
+.light-mode .border-white\/10 {
+  border-color: rgba(15, 23, 42, 0.08) !important;
+}
+.light-mode .border-white\/5 {
+  border-color: rgba(15, 23, 42, 0.05) !important;
+}
+.light-mode .bg-black\/40 {
+  background-color: rgba(15, 23, 42, 0.02) !important;
+}
+.light-mode .bg-black\/60 {
+  background-color: rgba(15, 23, 42, 0.05) !important;
+}
+
+/* Category & metadata badges on article cards */
+.light-mode span[class*="bg-black/60"],
+.light-mode span[class*="bg-black/60"] * {
+  background-color: #f1f5f9 !important;
+  border-color: rgba(15, 23, 42, 0.08) !important;
+  color: #475569 !important;
+}
+
+/* Bookmark saves button default floating indicator */
+.light-mode button[class*="bg-black/40"] {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  border-color: rgba(15, 23, 42, 0.1) !important;
+  color: #475569 !important;
+}
+.light-mode button[class*="bg-black/40"]:hover {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  color: #0c0f14 !important;
+}
+
+/* Breaking news ticker */
+.light-mode #top-breaking-news-ticker {
+  background-color: rgba(241, 245, 249, 0.95) !important;
+  border-bottom: 1px solid var(--border-light) !important;
+  color: var(--color-primary) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03) !important;
+}
+.light-mode #top-breaking-news-ticker span {
+  color: var(--color-secondary) !important;
+}
+.light-mode #top-breaking-news-ticker span:hover {
+  color: #d41c1c !important;
+}
+
+/* Site Header */
+.light-mode #site-primary-header {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-bottom: 1px solid var(--border-light) !important;
+  color: var(--color-primary) !important;
+}
+.light-mode #site-primary-header h1 {
+  color: #0f172a !important;
+}
+.light-mode #site-primary-header p {
+  color: var(--color-secondary) !important;
+}
+.light-mode #site-primary-header #nav-to-public, 
+.light-mode #site-primary-header #nav-to-cms {
+  color: var(--color-secondary) !important;
+}
+.light-mode #site-primary-header #nav-to-public:hover, 
+.light-mode #site-primary-header #nav-to-cms:hover {
+  background-color: rgba(15, 23, 42, 0.04) !important;
+}
+.light-mode #site-primary-header .bg-\[\#d41c1c\] {
+  background-color: #d41c1c !important;
+  color: #ffffff !important;
+}
+.light-mode #site-primary-header input {
+  background-color: rgba(15, 23, 42, 0.03) !important;
+  border-color: rgba(15, 23, 42, 0.1) !important;
+  color: #0f172a !important;
+}
+.light-mode #site-primary-header input::placeholder {
+  color: var(--color-muted) !important;
+}
+
+/* Frontpage interactive cards styling */
+.light-mode #ai-search-query-field {
+  background-color: rgba(15, 23, 42, 0.03) !important;
+  border-color: rgba(15, 23, 42, 0.1) !important;
+  color: #0f172a !important;
+}
+.light-mode #ai-search-query-field::placeholder {
+  color: var(--color-muted) !important;
+}
+
+.light-mode article[id^="article-card-"] {
+  background-color: var(--card-bg) !important;
+  border-color: var(--border-light) !important;
+  color: var(--color-primary) !important;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+}
+.light-mode article[id^="article-card-"] h3 {
+  color: #0f172a !important;
+}
+.light-mode article[id^="article-card-"] p {
+  color: var(--color-secondary) !important;
+}
+.light-mode article[id^="article-card-"] .border-t {
+  border-color: rgba(15, 23, 42, 0.06) !important;
+}
+.light-mode article[id^="article-card-"] span {
+  color: var(--color-secondary) !important;
+}
+.light-mode article[id^="article-card-"] span:hover {
+  color: #d41c1c !important;
+}
+
+/* Category Dashboard section */
+.light-mode #category-tag-filter-dashboard {
+  background-color: var(--card-bg) !important;
+  border-color: var(--border-light) !important;
+  box-shadow: 0 15px 35px -12px rgba(15, 23, 42, 0.04) !important;
+}
+.light-mode #category-tag-filter-dashboard h4 {
+  color: var(--color-muted) !important;
+}
+.light-mode #category-tag-filter-dashboard h5 {
+  color: #0f172a !important;
+}
+.light-mode #category-tag-filter-dashboard p {
+  color: var(--color-secondary) !important;
+}
+.light-mode #category-tag-filter-dashboard button {
+  background-color: rgba(15, 23, 42, 0.02) !important;
+  border-color: rgba(15, 23, 42, 0.05) !important;
+}
+.light-mode #category-tag-filter-dashboard button:hover {
+  background-color: rgba(15, 23, 42, 0.04) !important;
+  border-color: rgba(15, 23, 42, 0.08) !important;
+}
+.light-mode #category-tag-filter-dashboard button[class*="border-[#d41c1c]"] {
+  background-color: rgba(212, 28, 28, 0.05) !important;
+  border-color: #d41c1c !important;
+}
+.light-mode #category-tag-filter-dashboard button[class*="border-[#d41c1c]"] h5 {
+  color: #d41c1c !important;
+}
+
+/* Secondary Widgets & Sidebars */
+.light-mode #editorial-sidebar-bulletins button {
+  background-color: var(--card-bg) !important;
+  border-color: var(--border-light) !important;
+}
+.light-mode #editorial-sidebar-bulletins button[class*="border-[#d41c1c]"] {
+  background-color: rgba(212, 28, 28, 0.05) !important;
+  border-color: #d41c1c !important;
+}
+.light-mode #editorial-sidebar-bulletins h4,
+.light-mode #editorial-sidebar-bulletins h3 {
+  color: #0f172a !important;
+}
+
+/* Newsletter panel in Light Mode */
+.light-mode #newsletter-panel {
+  background-color: var(--card-bg) !important;
+  border-color: var(--border-light) !important;
+  box-shadow: 0 10px 45px -15px rgba(15, 23, 42, 0.08) !important;
+  color: var(--color-primary) !important;
+}
+.light-mode #newsletter-panel h3 {
+  color: #0f172a !important;
+}
+.light-mode #newsletter-panel p,
+.light-mode #newsletter-panel span,
+.light-mode #newsletter-panel label {
+  color: var(--color-secondary) !important;
+}
+.light-mode #newsletter-panel input {
+  background-color: rgba(15, 23, 42, 0.03) !important;
+  border-color: rgba(15, 23, 42, 0.1) !important;
+  color: #0f172a !important;
+}
+.light-mode #newsletter-panel input::placeholder {
+  color: var(--color-muted) !important;
+}
+
+/* Immersive Editorial Article screen */
+.light-mode #immersive-story-reader h1 {
+  color: #0f172a !important;
+}
+.light-mode #immersive-story-reader p {
+  color: var(--color-secondary) !important;
+}
+.light-mode #immersive-story-reader #editorial-body-prose {
+  color: #334155 !important;
+}
+.light-mode #immersive-story-reader .prose {
+  color: #334155 !important;
+}
+.light-mode #immersive-story-reader .bg-white\/5 {
+  background-color: rgba(15, 23, 42, 0.02) !important;
+  border-color: var(--border-light) !important;
+  color: #0f172a !important;
+}
+.light-mode #immersive-story-reader button[class*="border-white/20"] {
+  border-color: rgba(15, 23, 42, 0.15) !important;
+  color: var(--color-primary) !important;
+}
+.light-mode #immersive-story-reader button[class*="border-white/20"]:hover {
+  background-color: rgba(15, 23, 42, 0.04) !important;
+}
+
+/* Ad section visual frames */
+.light-mode #sponsored-prominent-banner {
+  background-color: var(--card-bg) !important;
+  border-color: var(--border-light) !important;
+}
+.light-mode #sponsored-prominent-banner .text-white {
+  color: #0f172a !important;
+}
+
+/* Role simulator bottom widget */
+.light-mode #newsroom-role-simulator {
+  background-color: var(--card-bg) !important;
+  border-color: var(--border-light) !important;
+  box-shadow: 0 10px 45px -15px rgba(15, 23, 42, 0.15) !important;
+}
+.light-mode #newsroom-role-simulator label,
+.light-mode #newsroom-role-simulator p {
+  color: var(--color-secondary) !important;
+}
+.light-mode #newsroom-role-simulator select {
+  background-color: rgba(15, 23, 42, 0.03) !important;
+  border-color: rgba(15, 23, 42, 0.1) !important;
+  color: #0f172a !important;
+}
+.light-mode #newsroom-role-simulator option {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+}
+
+/* Interactive Comments widgets inside Light mode */
+.light-mode #interactive-comments-workspace {
+  background-color: var(--card-bg) !important;
+  border-color: var(--border-light) !important;
+  box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05) !important;
+}
+.light-mode #interactive-comments-workspace h3,
+.light-mode #interactive-comments-workspace h4 {
+  color: #0f172a !important;
+}
+.light-mode #interactive-comments-workspace .comment-card-elem {
+  background-color: rgba(15, 23, 42, 0.02) !important;
+  border-color: rgba(15, 23, 42, 0.05) !important;
+  color: var(--color-primary) !important;
+}
+.light-mode #interactive-comments-workspace textarea {
+  background-color: rgba(15, 23, 42, 0.03) !important;
+  border-color: rgba(15, 23, 42, 0.1) !important;
+  color: #0f172a !important;
+}
+
+/* AI Semantic search outcome card light styles */
+.light-mode #ai-search-results-output {
+  background-color: rgba(15, 23, 42, 0.02) !important;
+  border-color: rgba(15, 23, 42, 0.06) !important;
+}
+.light-mode #ai-search-results-output h4 {
+  color: #d41c1c !important;
+}
+.light-mode #ai-search-results-output .bg-white\/5 {
+  background-color: #ffffff !important;
+  border-color: rgba(15, 23, 42, 0.06) !important;
+}
+.light-mode #ai-search-results-output .font-black {
+  color: #0f172a !important;
+}
+.light-mode #ai-search-results-output .font-black:hover {
+  color: #d41c1c !important;
+}
+.light-mode #ai-search-results-output p {
+  color: var(--color-secondary) !important;
+}
+
+/* Optimize publication reading prose for comfort, readability, and a premium editorial aesthetic */
+#editorial-body-prose p, 
+.markdown-body p, 
+.prose p {
+  line-height: 1.85 !important;
+  font-size: 1.05rem !important;
+  letter-spacing: -0.011em !important;
+  margin-bottom: 1.75rem !important;
+}
+
+#editorial-body-prose h2,
+.markdown-body h2 {
+  font-family: var(--font-display), serif !important;
+  font-size: 1.6rem !important;
+  font-weight: 700 !important;
+  margin-top: 2.25rem !important;
+  margin-bottom: 1rem !important;
+  letter-spacing: -0.02em !important;
+}
+
+#editorial-body-prose h3,
+.markdown-body h3 {
+  font-family: var(--font-display), serif !important;
+  font-size: 1.3rem !important;
+  font-weight: 600 !important;
+  margin-top: 1.75rem !important;
+  margin-bottom: 0.75rem !important;
+  letter-spacing: -0.015em !important;
+}
+
+#editorial-body-prose blockquote,
+.markdown-body blockquote {
+  border-left: 3px solid #d41c1c !important;
+  padding-left: 1.25rem !important;
+  font-style: italic !important;
+  color: #94a3b8 !important;
+  margin: 1.75rem 0 !important;
+}
+
+.light-mode #editorial-body-prose blockquote,
+.light-mode .markdown-body blockquote {
+  color: #475569 !important;
+}
+
+

@@ -1,0 +1,8 @@
+{
+  "name": "Remix: Ofofo.ng",
+  "description": "Ofofo.ng is a premium digital publishing and news platform covering African news, business, technology, entertainment, politics, and culture.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
