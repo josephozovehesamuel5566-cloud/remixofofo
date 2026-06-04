@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "Missing articleId" }, { status: 400 });
     }
 
-    const commentsList = db.getComments(articleId, false); // Fetch comment logs
+    const commentsList = await db.getComments(articleId, false); // Fetch comment logs
     return NextResponse.json(commentsList);
   } catch (error) {
     console.error("Comments fetch error:", error);

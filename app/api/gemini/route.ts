@@ -122,7 +122,7 @@ ${content.substring(0, 4000)}`;
 
     if (action === "ai-search") {
       const { query } = payload;
-      const articles = db.getArticles("Published");
+      const articles = await db.getArticles("Published");
       const articleCorpus = articles.map(a => ({
         id: a.id,
         title: a.title,
@@ -238,7 +238,7 @@ Return strictly a JSON array of 3 articles. Do not include any other markdown wr
       }
 
       // Now, save each of these articles into the local DB state!
-      const currentDB = db.getArticles();
+      const currentDB = await db.getArticles();
       const newSavedArticles = [];
 
       for (const item of parsedArticles) {
@@ -247,7 +247,7 @@ Return strictly a JSON array of 3 articles. Do not include any other markdown wr
         const exists = currentDB.some(art => art.slug === slug || art.title.toLowerCase() === item.title.toLowerCase());
         
         if (!exists) {
-          const created = db.createArticle({
+          const created = await db.createArticle({
             title: item.title,
             slug,
             summary: item.summary,
