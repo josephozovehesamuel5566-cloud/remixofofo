@@ -469,116 +469,130 @@ function saveLocalDB(state: DBState) {
   }
 }
 
+let isSeededChecked = false;
+let seedPromise: Promise<void> | null = null;
+
 // AUTOMATIC SEED TRIGGER FOR THE LIVE SUPABASE DATABASE ON FIRST CALL
 async function ensureSeeded(supabase: any) {
-  try {
-    const { count, error } = await supabase
-      .from('categories')
-      .select('*', { count: 'exact', head: true });
-    
-    if (error) {
-      console.error('Error checking categories row count in Supabase:', error);
-      return;
-    }
+  if (isSeededChecked) return;
+  if (seedPromise) return seedPromise;
 
-    if (count === 0) {
-      console.log('Supabase tables are empty. Seeding initial published catalog...');
+  seedPromise = (async () => {
+    try {
+      const { count, error } = await supabase
+        .from('categories')
+        .select('*', { count: 'exact', head: true });
       
-      // 1. Categories
-      const catsToInsert = SEED_CATEGORIES.map(c => ({
-        id: toUUID(c.id),
-        name: c.name,
-        slug: c.slug,
-        description: c.description,
-        icon: c.icon
-      }));
-      await supabase.from('categories').insert(catsToInsert);
+      if (error) {
+        console.error('Error checking categories row count in Supabase:', error);
+        return;
+      }
 
-      // 2. Profiles
-      const profilesToInsert = SEED_PROFILES.map(p => ({
-        id: toUUID(p.id),
-        email: p.email,
-        full_name: p.fullName,
-        role: p.role,
-        bio: p.bio,
-        avatar_url: p.avatarUrl,
-        followed_authors: (p.followedAuthors || []).map(id => toUUID(id)),
-        followed_topics: p.followedTopics || [],
-        saved_articles: (p.savedArticles || []).map(id => toUUID(id)),
-        reading_history: p.readingHistory || []
-      }));
-      await supabase.from('profiles').insert(profilesToInsert);
+      if (count === 0) {
+        console.log('Supabase tables are empty. Seeding initial published catalog...');
+        
+        // 1. Categories
+        const catsToInsert = SEED_CATEGORIES.map(c => ({
+          id: toUUID(c.id),
+          name: c.name,
+          slug: c.slug,
+          description: c.description,
+          icon: c.icon
+        }));
+        await supabase.from('categories').insert(catsToInsert);
 
-      // 3. Articles
-      const articlesToInsert = SEED_ARTICLES.map(a => ({
-        id: toUUID(a.id),
-        title: a.title,
-        slug: a.slug,
-        content: a.content,
-        summary: a.summary,
-        word_count: a.wordCount,
-        reading_time: a.readingTime,
-        featured_image: a.featuredImage,
-        status: a.status,
-        author_id: toUUID(a.authorId),
-        category_id: toUUID(a.categoryId),
-        tags: a.tags,
-        seo_title: a.seoTitle,
-        seo_description: a.seoDescription,
-        view_count: a.viewCount,
-        like_count: a.likeCount,
-        sponsored: a.sponsored,
-        premium_only: a.premiumOnly,
-        published_at: a.publishedAt || new Date().toISOString()
-      }));
-      await supabase.from('articles').insert(articlesToInsert);
+        // 2. Profiles
+        const profilesToInsert = SEED_PROFILES.map(p => ({
+          id: toUUID(p.id),
+          email: p.email,
+          full_name: p.fullName,
+          role: p.role,
+          bio: p.bio,
+          avatar_url: p.avatarUrl,
+          followed_authors: (p.followedAuthors || []).map(id => toUUID(id)),
+          followed_topics: p.followedTopics || [],
+          saved_articles: (p.savedArticles || []).map(id => toUUID(id)),
+          reading_history: p.readingHistory || []
+        }));
+        await supabase.from('profiles').insert(profilesToInsert);
 
-      // 4. Comments
-      const commentsToInsert = SEED_COMMENTS.map(c => ({
-        id: toUUID(c.id),
-        article_id: toUUID(c.articleId),
-        user_id: c.userId ? toUUID(c.userId) : null,
-        user_name: c.userName,
-        user_avatar: c.userAvatar,
-        content: c.content,
-        parent_id: c.parentId ? toUUID(c.parentId) : null,
-        likes: c.likes || 0,
-        status: c.status
-      }));
-      await supabase.from('comments').insert(commentsToInsert);
+        // 3. Articles
+        const articlesToInsert = SEED_ARTICLES.map(a => ({
+          id: toUUID(a.id),
+          title: a.title,
+          slug: a.slug,
+          content: a.content,
+          summary: a.summary,
+          word_count: a.wordCount,
+          reading_time: a.readingTime,
+          featured_image: a.featuredImage,
+          status: a.status,
+          author_id: toUUID(a.authorId),
+          category_id: toUUID(a.categoryId),
+          tags: a.tags,
+          seo_title: a.seoTitle,
+          seo_description: a.seoDescription,
+          view_count: a.viewCount,
+          like_count: a.likeCount,
+          sponsored: a.sponsored,
+          premium_only: a.premiumOnly,
+          published_at: a.publishedAt || new Date().toISOString()
+        }));
+        await supabase.from('articles').insert(articlesToInsert);
 
-      // 5. Advertisements
-      const adsToInsert = SEED_ADVERTISEMENTS.map(ad => ({
-        id: toUUID(ad.id),
-        title: ad.title,
-        image_url: ad.imageUrl,
-        link: ad.link,
-        position: ad.position,
-        views: ad.views || 0,
-        clicks: ad.clicks || 0,
-        active: ad.active
-      }));
-      await supabase.from('advertisements').insert(adsToInsert);
+        // 4. Comments
+        const commentsToInsert = SEED_COMMENTS.map(c => ({
+          id: toUUID(c.id),
+          article_id: toUUID(c.articleId),
+          user_id: c.userId ? toUUID(c.userId) : null,
+          user_name: c.userName,
+          user_avatar: c.userAvatar,
+          content: c.content,
+          parent_id: c.parentId ? toUUID(c.parentId) : null,
+          likes: c.likes || 0,
+          status: c.status
+        }));
+        await supabase.from('comments').insert(commentsToInsert);
 
-      // 6. Analytics
-      const analyticsToInsert = SEED_ANALYTICS.map(an => ({
-        day: an.day,
-        page_views: an.pageViews,
-        unique_visitors: an.uniqueVisitors,
-        revenue: an.revenue,
-        subscriber_growth: an.subscriberGrowth,
-        top_articles: (an.topArticles || []).map(ta => ({ ...ta, articleId: toUUID(ta.articleId) })),
-        traffic_sources: an.trafficSources || [],
-        top_authors: (an.topAuthors || []).map(tau => ({ ...tau, authorId: toUUID(tau.authorId) }))
-      }));
-      await supabase.from('analytics_metrics').insert(analyticsToInsert);
+        // 5. Advertisements
+        const adsToInsert = SEED_ADVERTISEMENTS.map(ad => ({
+          id: toUUID(ad.id),
+          title: ad.title,
+          image_url: ad.imageUrl,
+          link: ad.link,
+          position: ad.position,
+          views: ad.views || 0,
+          clicks: ad.clicks || 0,
+          active: ad.active
+        }));
+        await supabase.from('advertisements').insert(adsToInsert);
 
-      console.log('Seeding fully completed for Supabase.');
+        // 6. Analytics
+        const analyticsToInsert = SEED_ANALYTICS.map(an => ({
+          day: an.day,
+          page_views: an.pageViews,
+          unique_visitors: an.uniqueVisitors,
+          revenue: an.revenue,
+          subscriber_growth: an.subscriberGrowth,
+          top_articles: (an.topArticles || []).map(ta => ({ ...ta, articleId: toUUID(ta.articleId) })),
+          traffic_sources: an.trafficSources || [],
+          top_authors: (an.topAuthors || []).map(tau => ({ ...tau, authorId: toUUID(tau.authorId) }))
+        }));
+        await supabase.from('analytics_metrics').insert(analyticsToInsert);
+
+        console.log('Seeding fully completed for Supabase.');
+      }
+      isSeededChecked = true;
+    } catch (err) {
+      console.error('Exception in ensureSeeded:', err);
+    } finally {
+      seedPromise = null;
     }
-  } catch (err) {
-    console.error('Exception in ensureSeeded:', err);
-  }
+  })();
+
+  return seedPromise;
 }
+
 
 // SNAKECASE TO CAMELCASE MAPPER ROUTINES FOR PRODUCING CLEAN DATA MODELS
 

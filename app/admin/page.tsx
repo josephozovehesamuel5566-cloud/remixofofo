@@ -4,12 +4,14 @@ import { getCurrentUserId } from '@/lib/actions';
 import AdminClient from '@/components/AdminClient';
 
 export default async function AdminPage() {
-  // Read initial states server-side for clean compilation & no hydration mismatches
+  // Read initial states server-side in parallel to prevent sequential database waterfall blocks
   const currentUserId = await getCurrentUserId();
-  const articlesList = await db.getArticles();
-  const profilesList = await db.getProfiles();
-  const categoriesList = await db.getCategories();
-  const adsList = await db.getAds();
+  const [articlesList, profilesList, categoriesList, adsList] = await Promise.all([
+    db.getArticles(),
+    db.getProfiles(),
+    db.getCategories(),
+    db.getAds(),
+  ]);
 
   return (
     <AdminClient
